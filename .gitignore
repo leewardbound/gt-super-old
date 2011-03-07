@@ -1,0 +1,10 @@
+*.pyc
+dev.*
+local_*
+*.swp
+pip-log.txt
+cache/
+media/css/compiled/*.css
+apps/styles/.sass-cache/
+env
+.venv

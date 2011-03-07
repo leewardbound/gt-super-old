@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+{% load orienteer %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/site_tabs.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/pagination.css" />
+    <link href='http://fonts.googleapis.com/css?family=Expletus+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" />
+    {% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% block logo_link_image %}<a href="{% url home %}"><img src="{{ STATIC_URL }}img/globetrotter.png" alt="Pinax"/></a>{% endblock %}
+
+{% block login %}
+    {% include "_account_bar.html" %}
+{% endblock %}
+
+{% block right_tabs %}
+    {% if user.is_authenticated %}
+        <ul class="tabs">{% spaceless %}
+            <li id="tab_"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %} ({{ notice_unseen_count }}){% endif %}</a></li>
+        {% endspaceless %}</ul>
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block extra_body_base %}
+    {% block extra_body %}{% endblock %}
+{% endblock %}
