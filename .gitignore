@@ -8,3 +8,4 @@ media/css/compiled/*.css
 apps/styles/.sass-cache/
 env
 .venv
+GeoIP.dat

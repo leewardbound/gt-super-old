@@ -1,0 +1,23 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+
+{% block head_title %}{% trans "Create" %}{% endblock %}
+
+{% block body_class %}create_route{% endblock %}
+
+{% block body %}
+    
+<h1>{% trans "Edit your route" %}</h1>
+<div class="new_rule">
+  <div id="new_rule_box">
+    {% if error %}
+    <div class="ctrlHolder error"><h3>There was an error</h3></div>
+    {% endif %}
+    {%uni_form new_ruleset_form new_ruleset_form.helper %}
+  </div>
+</div>
+
+
+{% endblock %}

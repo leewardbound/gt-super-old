@@ -12,3 +12,6 @@ werkzeug
 south
 gunicorn
 gevent
+django-redis-cache
+redis
+pygeoip

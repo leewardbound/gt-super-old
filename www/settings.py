@@ -13,6 +13,8 @@ PINAX_THEME = "default"
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+SITE_NAME = 'Globetrotter'
+
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -23,7 +25,7 @@ ADMINS = [
 ]
 
 MANAGERS = ADMINS
-
+CACHE_BACKEND = 'redis_cache.cache://localhost:6379'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3", # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
@@ -208,3 +210,5 @@ try: from local_settings import *
 except ImportError: pass
 
 SERVE_MEDIA = DEBUG
+import pygeoip
+GEO_DRIVER = pygeoip.GeoIP(os.path.join(PROJECT_ROOT, 'GeoIP.dat'))

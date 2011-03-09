@@ -32,7 +32,16 @@ Install process:
   # Install python dependencies into virtualenv
   python bootstrap.py
 
+  cd www/
+
+  # Maxmind's geoip
+  wget "http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz"
+  gunzip GeoIP.dat.gz
+
+  # Database migrations
+  python manage.py syncdb
+  python manage.py migrate route
+
   # Setup apache with example config (on ubuntu)
   ln -s `pwd`/apache.conf /etc/apache2/sites-enabled/globetrotter
   /etc/init.d/apache2 restart
-

@@ -1,46 +1,43 @@
 {% extends "site_base.html" %}
 
 {% load i18n %}
+{% load uni_form_tags %}
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
+
+{% block extra_head %}
+<script>
+$(function() {
+  $('.hide_container').each(function() {
+    container = $(this);
+    $('.hide_link', container).click(function(){
+      $('.unhidable', container).toggle()});
+  });
+});
+</script>
+{% endblock %}
 
 {% block body_class %}home{% endblock %}
 
 {% block body %}
     
-    <h1>{% trans "No BS, just get started" %}</h1>
-    
-    <p>
-        {% blocktrans %}
-        <b>Pinax</b> is a <a href="http://djangoproject.com/">Django</a>
-        project intended to provide a starting point for websites. By
-        integrating numerous reusable Django apps to take care of the
-        things that many sites have in common, it lets you focus on what
-        makes your site different.
-        {% endblocktrans %}
-    </p>
-    
-    <p>
-        {% blocktrans %}
-        For more information about Pinax, see
-        <a href="http://pinaxproject.com/">http://pinaxproject.com/</a>.
-        {% endblocktrans %}
-    </p>
-    
-    <h2>{% trans "About this project" %}</h2>
-    
-    <p>
-        {% blocktrans %}
-        This project demonstrates a closed site requiring an invitation to
-        join and not exposing any information publicly. It provides a
-        top-level task tracking system, wiki and bookmarks. It is intended
-        to be the starting point of sites like intranets.
-        {% endblocktrans %}
-    </p>
-    
-    <hr />
-    <dl class="what_next">
-        <dt><a href="{% url notification_notices %}">Notices</a></dt>
-        <dd>to configure and view notices.</dd>
-    </dl>
+<h1>{% trans "No BS, just get started" %}</h1>
+<div class="new_rule">
+  <a class="hide_link" id="new_rule" href="/create_route">Create a new rule</a>
+</div>
+
+<div class="rulesets_list">
+  {% for r in user.ruleset_set.all.reverse %}
+  <div class="ruleset hide_container" id="{{r.id}}">
+    <span class="name">{{ r }}
+      <a href="/edit_route/{{r.id}}">edit</a>
+    </span>
+    <span class="url"><input type='text' size="40" value="{{r.url}}" /></span>
+    <a class="hide_link details_dropdown" href="#">Details</a>
+    <span class="stats">{{ r.clicks_today|default:0 }} clicks today</span>
+  </div>
+  {% endfor %}
+</div>
+
+
 {% endblock %}
