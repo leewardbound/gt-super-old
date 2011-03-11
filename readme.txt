@@ -35,7 +35,7 @@ Install process:
   cd www/
 
   # Maxmind's geoip
-  wget "http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz"
+  wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
   gunzip GeoIP.dat.gz
 
   # Database migrations
