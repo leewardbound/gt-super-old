@@ -10,7 +10,8 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 PINAX_THEME = "default"
 
-DEBUG = False
+DEBUG = True
+DEVELOP = False
 SERVE_MEDIA = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -214,4 +215,4 @@ except ImportError: pass
 
 import pygeoip
 GEO_DRIVER = pygeoip.GeoIP(os.path.join(PROJECT_ROOT, 'GeoIP.dat'))
-MEDIA_DEV_MODE = DEBUG
+MEDIA_DEV_MODE = DEVELOP
