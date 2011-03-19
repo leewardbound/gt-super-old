@@ -2,7 +2,8 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from ordered_model.models import OrderedModel
-from apps.models import *
+from contrib.random_hashes import randHash8
+from contrib.easy.models import *
 import datetime
 
 RULE_TYPES = (
@@ -24,12 +25,9 @@ MATCH_TYPES = (
         )
 
 
-def stub():
-    from apps.models import randHash40
-    return randHash40()[:6]
 class RuleSet(user_owned_model):
     nickname = models.CharField(max_length=128, unique=True)
-    short_url_stub = models.CharField(max_length=20, default=stub, unique=True)
+    short_url_stub = models.CharField(max_length=20, default=randHash8, unique=True)
     if_all_rules_fail_redirect_to = models.URLField(verify_exists=False, max_length=1024)
     and_pass_subids = models.BooleanField(default=False)
     def __unicode__(self): return self.nickname
@@ -50,7 +48,7 @@ class RuleSet(user_owned_model):
         'short_url_stub': self.short_url_stub,
         'if_all_rules_fail_redirect_to': self.if_all_rules_fail_redirect_to, 
         'and_pass_subids': self.and_pass_subids,
-        'rules': [r.to_json() for r in self.rule_set.all()] })
+        'rules': [r.to_json() for r in self.rule_set.all() if len(r.value)] })
 
     @staticmethod
     def nickname_key(name_or_id):
@@ -58,10 +56,10 @@ class RuleSet(user_owned_model):
 
     @staticmethod
     def find_ruleset(name_or_id):
-        find = RuleSet.objects.filter(short_url_stub=name_or_id)
+        find = RuleSet.f(short_url_stub=name_or_id)
         if find.count() > 0:
             return find[0]
-        find = RuleSet.objects.filter(pk=name_or_id)
+        find = RuleSet.f(pk=name_or_id)
         if find.count() > 0:
             return find[0]
         else: 
@@ -84,7 +82,9 @@ class RuleSet(user_owned_model):
 
     @staticmethod
     def evaluate_rules(rules, visitor):
+        import json
         for rule in rules:
+            rule = json.loads(rule)
             if Rule.passes(rule, visitor):
                 return rule
         return False
@@ -95,12 +95,15 @@ class RuleSet(user_owned_model):
         default = ruleset.get('if_all_rules_fail_redirect_to', 'about:blank')
         RuleSet.increment_clicks(ruleset['id'])
         if not rule:
+            print "No rules passed"
             if ruleset['and_pass_subids']: 
                 return RuleSet.pass_subids(default, visitor)
             else: return default
         else:
+            print "Rule passed:",rule
             RuleSet.increment_clicks(ruleset['id'], False, rule['id'])
             target = rule.get('redirect_to', default)
+            if 'http' not in target: target = default
             if rule.get('and_pass_subids', False):
                 return RuleSet.pass_subids(target, visitor)
             else:
@@ -115,19 +118,26 @@ class RuleSet(user_owned_model):
         from forms import RuleSetForm
         from uni_form.helpers import FormHelper, Submit, Reset
         from uni_form.helpers import Layout, Fieldset, Row, HTML
+        from uni_form.templatetags.uni_form_tags import do_uni_form
         if not req.method == 'POST': data = None
         else: data = req.POST
-        form = RuleSetForm(req.user, data, *args, **kwargs) 
+        extra = 1
+        if 'instance' in kwargs:
+            extra = 0
+        form = RuleSetForm(extra, req.user, data=data, *args, **kwargs) 
         form.helper = FormHelper()
         if 'instance' in kwargs:
             form.helper.form_action = '/edit_route/%s'%kwargs['instance'].id
         else: form.helper.form_action = '/create_route'
         form.helper.form_method = 'POST'
         form.helper.add_layout(Layout(
-            Row('nickname', 'short_url_stub'),
-            Row('if_all_rules_fail_redirect_to', 'and_pass_subids')
-            ))
-        form.helper.add_input(Submit('save', "Save this form"))
+            Fieldset('Setup Route',
+                Row('nickname', 'short_url_stub'),
+            ),
+            Fieldset('Default URL',
+                Row('if_all_rules_fail_redirect_to', 'and_pass_subids')
+            )))
+        form.helper.add_input(Submit('save', "Save this route"))
         return form
 
 
@@ -137,7 +147,7 @@ class RuleSet(user_owned_model):
         else: segment = ''
         if not day:
             day = datetime.date.today()
-        return ('ruleset_%s%s_clicks_%s'%(ruleset_id,segment,day)
+        return ('ruleset_clicks_%s_%s%s'%(day,segment,ruleset_id)
                 ).replace('-','_')
 
     @staticmethod
@@ -150,14 +160,20 @@ class RuleSet(user_owned_model):
     def increment_clicks(ruleset_id, day=False, segment_id=0):
         from django.core.cache import cache
         key = RuleSet.clicks_key(ruleset_id, day, segment_id)
-        if not cache.get(key):
-            cache.set(key, 0, 60*60*24*7)
-        return cache.incr(key, 1)
+        if not cache.get(key): cache.set(key, 0)
+        i = cache.incr(key, 1)
+        cache.expire(key, 60*60*24*7)
+        return i
 
     def clicks_today(self):
         return RuleSet.clicks_for(self.id)
-
-
+    def last_seven_days(self):
+        from datetime import datetime, timedelta
+        from contrib.date import datetimeIterator
+        today = datetime.now()
+        week_ago= today - timedelta(days=7)
+        return [(str(d.date()), RuleSet.clicks_for(self.id, d))
+            for d in datetimeIterator(from_date=week_ago, to_date=today)]
     
 class Rule(OrderedModel):
     key = models.CharField(max_length=32, choices=RULE_TYPES)
@@ -183,8 +199,9 @@ class Rule(OrderedModel):
     @staticmethod
     def passes(obj, visitor):
         if obj['key'] == 'country':
-            return Rule.check_matching(
-                    settings.GEO_DRIVER.country_code_by_addr(visitor['ip']),
+            country = settings.GEO_DRIVER.country_code_by_addr(visitor['ip'])
+            if visitor['ip'] == '127.0.0.1': country = 'US'
+            return Rule.check_matching(country,
                     obj['match_type'],
                     obj['value'].upper()
                     )

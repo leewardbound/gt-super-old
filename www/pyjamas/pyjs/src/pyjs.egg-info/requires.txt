@@ -1,0 +1,4 @@
+
+
+[test]
+zope.testing

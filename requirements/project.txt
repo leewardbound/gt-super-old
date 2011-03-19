@@ -5,7 +5,6 @@
 -e git+https://github.com/pydanny/django-uni-form.git#egg=django-uni-form
 -e git+https://github.com/drewyeaton/django-orienteer.git#egg=django-orienteer
 -e git+https://github.com/bfirsh/django-ordered-model.git#egg=django-ordered-model
-
 django_extensions
 django-profiles
 werkzeug
@@ -15,3 +14,4 @@ gevent
 django-redis-cache
 redis
 pygeoip
+django-mediagenerator

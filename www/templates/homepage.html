@@ -7,13 +7,8 @@
 
 {% block extra_head %}
 <script>
-$(function() {
-  $('.hide_container').each(function() {
-    container = $(this);
-    $('.hide_link', container).click(function(){
-      $('.unhidable', container).toggle()});
-  });
-});
+var object_list = [ {% for r in objects.object_list.reverse %}
+{{r.to_json|safe}}, {% endfor %} ]
 </script>
 {% endblock %}
 
@@ -26,17 +21,7 @@ $(function() {
   <a class="hide_link" id="new_rule" href="/create_route">Create a new rule</a>
 </div>
 
-<div class="rulesets_list">
-  {% for r in user.ruleset_set.all.reverse %}
-  <div class="ruleset hide_container" id="{{r.id}}">
-    <span class="name">{{ r }}
-      <a href="/edit_route/{{r.id}}">edit</a>
-    </span>
-    <span class="url"><input type='text' size="40" value="{{r.url}}" /></span>
-    <a class="hide_link details_dropdown" href="#">Details</a>
-    <span class="stats">{{ r.clicks_today|default:0 }} clicks today</span>
-  </div>
-  {% endfor %}
+<div class="object_list">
 </div>
 
 

@@ -49,6 +49,11 @@ USE_I18N = False
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 MEDIA_URL = "/media/"
 
+DEV_MEDIA_URL = '/compiled-media/'
+PRODUCTION_MEDIA_URL = '/compiled-media/'
+
+GLOBAL_MEDIA_DIRS = (os.path.join(os.path.dirname(__file__), 'static'),)
+
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
@@ -72,6 +77,7 @@ TEMPLATE_LOADERS = [
 ]
 
 MIDDLEWARE_CLASSES = [
+    'mediagenerator.middleware.MediaMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -125,8 +131,8 @@ INSTALLED_APPS = [
     "pinax.templatetags",
     
     # external
-    "notification", # must be first
-    "orienteer",
+    "notification",
+    'mediagenerator',
     "emailconfirmation",
     "staticfiles",
     "debug_toolbar",
@@ -145,8 +151,9 @@ INSTALLED_APPS = [
     "pinax.apps.signup_codes",
     
     # project
+    "contrib.easy",
     "profiles",
-    "route",
+    "apps.route",
 ]
 
 FIXTURE_DIRS = [
@@ -168,11 +175,6 @@ MARKUP_CHOICES = [
 ]
 
 
-COMPASS_PROJECT_DIR = PROJECT_ROOT+'/apps/styles/'
-COMPASS_OUTPUT_DIR = PROJECT_ROOT + '/media/css/compiled/'
-COMPASS_OUTPUT_URL = MEDIA_URL + 'css/compiled/'
-COMPASS_BIN = '/usr/bin/compass'
-COMPASS_STYLE = 'compact'
 
 AUTH_PROFILE_MODULE = "profiles.Profile"
 NOTIFICATION_LANGUAGE_MODULE = "account.Account"
@@ -194,6 +196,7 @@ EMAIL_CONFIRMATION_DAYS = 2
 EMAIL_DEBUG = DEBUG
 
 AUTHENTICATED_EXEMPT_URLS = [
+    r"^/route/",
     r"^/account/signup/$",
     r"^/account/password_reset",
     r"^/account/confirm_email",
@@ -204,6 +207,7 @@ DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS": False,
 }
 
+from assets import *
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.
 try: from local_settings import *
@@ -212,3 +216,4 @@ except ImportError: pass
 SERVE_MEDIA = DEBUG
 import pygeoip
 GEO_DRIVER = pygeoip.GeoIP(os.path.join(PROJECT_ROOT, 'GeoIP.dat'))
+MEDIA_DEV_MODE = DEBUG

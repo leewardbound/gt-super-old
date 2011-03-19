@@ -1,38 +1,34 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.context import RequestContext
 from django.http import HttpResponse
+from contrib.easy.views import *
+from contrib.easy.views.json import *
 from models import RuleSet
+from forms import RuleSetForm
 
 def route(req, id):
     rs = RuleSet.cached_find_ruleset(id)
-    visitor = {'ip': req.META['REMOTE_ADDR']}
+    visitor = {'ip': req.META.get('REMOTE_ADDR', '0.0.0.0'),
+            'referer': req.META.get('HTTP_REFERER', ''),
+            'params': req.META.get('QUERY_STRING', ''),
+            }
     if not rs: return HttpResponse('Ruleset Not Found')
     return redirect(RuleSet.evaluate_visitor(rs, visitor))
-    
 
-
-
-@login_required
 def homepage(req):
-    data = {'new_ruleset_form': RuleSet.form_for(req) }
-    return render_to_response('homepage.html', data, 
-            context_instance=RequestContext(req))
+    return user_object_list(req, RuleSet.a(), template='homepage.html')
 
-@login_required
 def edit_route(req, id=False):
-    if id:
-        inst = get_object_or_404(RuleSet, pk=id)
-        form = RuleSet.form_for(req, instance=inst)
-    else: 
-        form = RuleSet.form_for(req)
-    error = False
-    if req.method == 'POST':
-        if form.is_valid() and form.save():
-            return redirect('/')
-        else:
-            error = True
-    data = {'new_ruleset_form': form, 'error': error}
-    return render_to_response('edit_route.html', data, 
-            context_instance=RequestContext(req))
+    return user_form_page(req, RuleSet, RuleSetForm,
+            id=id, redirect_to='/')
 
+def route_form_partial(req, id=False):
+    return user_form_page(req, RuleSet, RuleSetForm,
+            form_action='/edit_route/{id}',
+            id=id, redirect_to='/')
+def route_details_partial(req, id):
+    return user_object_detail(req, RuleSet.f(id=id),
+            template='route_details_partial.html')
+def route_graphs_partial(req, id):
+    return user_object_detail(req, RuleSet.f(id=id),
+            template='route_graphs_partial.html')

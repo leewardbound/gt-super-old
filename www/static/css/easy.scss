@@ -1,0 +1,48 @@
+// COMMON STUFF //
+.hidden, .unhidable { display: none }
+
+// OBJECT STUFF //
+.object_row {
+  border: 3px solid #aaa;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #ddd;
+  padding: 4px;
+  margin-top: 8px;
+
+  span.name { 
+    width: 150px;
+    padding: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-shadow: 1px 1px solid #000;
+  }
+
+  a.delete { 
+    float: right;
+    color: lighten(red, 15%);
+  }
+  a.delete:hover { color: black }
+}
+
+// FORM STUFF //
+.ctrlHolder { padding: 8px; }
+.ctrlHolder.error { border: red 1px dotted; background: #FEE;}
+.formRow .ctrlHolder { 
+  display: inline-block;
+  input { width: 90% }
+  }
+
+.uniForm fieldset {
+  border: thin dashed gray;
+  margin: 10px;
+  padding: 10px;
+}
+.formRow li {
+  display: inline-block;
+  width: 130px;
+  vertical-align: top;
+}
+.formRow li select {
+  width: 115px;
+}

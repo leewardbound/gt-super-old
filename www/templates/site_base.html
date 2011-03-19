@@ -2,13 +2,9 @@
 
 {% load i18n %}
 {% load ifsetting_tag %}
-{% load orienteer %}
-
+{% load media %}
 {% block extra_head_base %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/site_tabs.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}pinax/css/pagination.css" />
-    <link href='http://fonts.googleapis.com/css?family=Expletus+Sans' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" />
+
     {% block extra_head %}{% endblock %}
 {% endblock %}
 
@@ -21,7 +17,7 @@
 {% block right_tabs %}
     {% if user.is_authenticated %}
         <ul class="tabs">{% spaceless %}
-            <li id="tab_"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %} ({{ notice_unseen_count }}){% endif %}</a></li>
+            <li id="tab_"><a href="{% url home %}">{% trans "My Routes" %}</a></li>
         {% endspaceless %}</ul>
     {% endif %}
 {% endblock %}
