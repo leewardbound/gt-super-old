@@ -1,5 +1,0 @@
-[console_scripts]
-translate = pyjs.translator:main
-smbuild = pyjs.sm:build_script
-build = pyjs.browser:build_script
-

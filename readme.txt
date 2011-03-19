@@ -19,6 +19,9 @@ Requirements: Linux, python, redis, sqlite, pip, virtualenv, a webserver (nginx 
     
     sudo apt-get install python{,-setuptools,-sqlite} redis-server
     easy_install virtualenv, pip
+Developers:
+    You additionally need Sass and Pyjamas installed to compile
+    the SCSS and PyvaScript (*.pyva) files in /static/.
 
 Install process:
   # Get the repo
