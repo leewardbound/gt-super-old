@@ -11,6 +11,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PINAX_THEME = "default"
 
 DEBUG = False
+SERVE_MEDIA = True
 TEMPLATE_DEBUG = DEBUG
 
 SITE_NAME = 'Globetrotter'
@@ -82,7 +83,6 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django_openid.consumer.SessionConsumer",
     "django.contrib.messages.middleware.MessageMiddleware",
     "groups.middleware.GroupAwareMiddleware",
     "pinax.apps.account.middleware.LocaleMiddleware",
@@ -137,7 +137,6 @@ INSTALLED_APPS = [
     "staticfiles",
     "debug_toolbar",
     "uni_form",
-    "django_openid",
     "ajax_validation",
     "timezones",
     "announcements",
@@ -213,7 +212,6 @@ from assets import *
 try: from local_settings import *
 except ImportError: pass
 
-SERVE_MEDIA = DEBUG
 import pygeoip
 GEO_DRIVER = pygeoip.GeoIP(os.path.join(PROJECT_ROOT, 'GeoIP.dat'))
 MEDIA_DEV_MODE = DEBUG
