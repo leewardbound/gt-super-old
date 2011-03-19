@@ -8,6 +8,6 @@ MEDIA_BUNDLES = (
             'js/jquery-1.5.1.min.js',
             'js/jquery-ui-1.8.11.custom.min.js',
             'js/base.js',
-            'easy.py',
+            'easy.pyva',
             ),
         )

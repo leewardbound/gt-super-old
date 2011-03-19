@@ -5,6 +5,8 @@
 -e git+https://github.com/pydanny/django-uni-form.git#egg=django-uni-form
 -e git+https://github.com/drewyeaton/django-orienteer.git#egg=django-orienteer
 -e git+https://github.com/bfirsh/django-ordered-model.git#egg=django-ordered-model
+-e hg+https://bitbucket.org/wkornewald/pymeta#egg=pymeta
+-e hg+https://bitbucket.org/wkornewald/pyvascript#egg=pyvascript
 django_extensions
 django-profiles
 werkzeug
