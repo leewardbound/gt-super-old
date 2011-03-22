@@ -146,7 +146,7 @@ class RuleSet(user_owned_model):
         from contrib.date import datetimeIterator
         today = datetime.now()
         week_ago= today - timedelta(days=7)
-        return [(str(d.date()), RuleSet.clicks_for(self.id, d.date()))
+        return [[str(d.date()), RuleSet.clicks_for(self.id, d.date())]
             for d in datetimeIterator(from_date=week_ago, to_date=today)]
     
 class Rule(OrderedModel):
