@@ -7,7 +7,7 @@
 
 {% block extra_head %}
 <script>
-var object_list = [ {% for r in objects.object_list.reverse %}
+object_list['ruleset'] = [ {% for r in objects.object_list.reverse %}
 {{r.to_json|safe}}, {% endfor %} ]
 </script>
 {% endblock %}
@@ -18,10 +18,10 @@ var object_list = [ {% for r in objects.object_list.reverse %}
     
 <h1>{% trans "No BS, just get started" %}</h1>
 <div class="new_rule">
-  <a class="hide_link" id="new_rule" href="/create_route">Create a new rule</a>
+  <a class="ajax" id="new_rule" href="/create_route">Create a new route</a>
 </div>
 
-<div class="object_list">
+<div class="{{type|lower}} object_list">
 </div>
 
 

@@ -15,15 +15,19 @@ urlpatterns = patterns("",
     url(r"^$", 'route.views.homepage', name="home"),
 
     url(r"^route/", include('route.urls')),
-    url(r"^create_route$", 'route.views.edit_route', name="create_route"),
+    url(r"^create_route$", 'route.views.edit_route_partial', name="create_route"),
 
-    url(r"^edit_route/(?P<id>[\d\w]*)$", 'route.views.edit_route',
-        name="edit_route"),
+    url(r"^edit_route/(?P<id>[\d\w]*)$", 'route.views.edit_route_partial',
+        name="edit_route_partial"),
+    url(r"^delete_route/(?P<id>[\d\w]*)$", 'route.views.delete_route',
+        name="delete_route"),
 
-    url(r"^route_form_partial/(?P<id>[\d\w]*)$",
-        'route.views.route_form_partial', name="route_form_partial"),
-    url(r"^route_details_partial/(?P<id>[\d\w]*)$", 
-        'route.views.route_details_partial', name="route_details_partial"),
+    url(r"^add_rule/(?P<id>[\d\w]*)$", 'route.views.add_rule',
+        name="add_rule"),
+
+    url(r"^edit_route_rules/(?P<id>[\d\w]*)$",
+        'route.views.edit_route_rules', name="edit_route_rules"),
+
     url(r"^route_graphs_partial/(?P<id>[\d\w]*)$", 
         'route.views.route_graphs_partial', name="route_graphs_partial"),
 

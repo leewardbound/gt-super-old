@@ -9,5 +9,6 @@ MEDIA_BUNDLES = (
             'js/jquery-ui-1.8.11.custom.min.js',
             'js/base.js',
             'easy.py',
+            'route.py',
             ),
         )

@@ -1,0 +1,21 @@
+<div class="new_rule">
+  <a class="ajax" id="new_rule" href="/add_rule/{{id}}">Create a new rule</a>
+</div>
+<br />
+{% if not obj.rule_set.count %}
+  <div class="empty_set">
+    No Rules Defined
+  </div>
+{% endif %}
+{% for rule in obj.rule_set.all %}
+  <div class="rule">
+    <b>If</b> {{rule.key}} {{rule.get_match_type_display}} {{rule.value}}
+    <br />
+    <b>Then redirect to</b> {{rule.redirect_to}}
+    {% if rule.and_pass_subids %}
+    <br />
+    <b>And pass subids</b>
+    {% endif %}
+  </div>
+{% endfor %}
+
