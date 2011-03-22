@@ -97,12 +97,10 @@ class RuleSet(user_owned_model):
         default = ruleset.get('if_all_rules_fail_redirect_to', 'about:blank')
         RuleSet.increment_clicks(ruleset['id'])
         if not rule:
-            print "No rules passed"
             if ruleset['and_pass_subids']: 
                 return RuleSet.pass_subids(default, visitor)
             else: return default
         else:
-            print "Rule passed:",rule
             RuleSet.increment_clicks(ruleset['id'], False, rule['id'])
             target = rule.get('redirect_to', default)
             if 'http' not in target: target = default
