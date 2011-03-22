@@ -7,6 +7,11 @@
     xaxis:{renderer:$.jqplot.DateAxisRenderer},
     yaxis:{min: 0, tickInterval: 1},
   },
-  series:[{lineWidth:4, markerOptions:{style:'square'}}]
+  series:[
+    {label: 'Total'},
+    {% for rule in obj.rule_set.a %}
+      {label: '{{rule.summary}}'},
+    {% endfor %}
+  ]
     });
 </script>

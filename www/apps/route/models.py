@@ -10,8 +10,9 @@ RULE_TYPES = (
         ('ip', 'IP'),
         ('referer', 'Referer URL'),
         ('country', 'Country'),
-        ('param', 'URL Parameter (e.g. "c1=5")'),
-        ('hour', 'Current hour, EST, 24h format'), ('random', 'Random N % of your traffic'),
+        ('param', 'URL Parameter'),
+        ('hour', 'Current hour [24h format]'),
+        ('random', 'Random N % of your traffic'),
     )
 MATCH_TYPES = (
         ('eq', '= (EQUALS)'),
@@ -20,10 +21,10 @@ MATCH_TYPES = (
         ('nregex', '!~= (NOT REGEX)'),
         ('gt', '> (GREATER THAN)'),
         ('lt', '< (LESS THAN)'),
-        ('in', 'in (Any,of,comma,seperated)'),
-        ('nin', 'not in (Any,of,comma,seperated)'),
-        ('file', 'in file (Updated hourly, newline seperated)'),
-        ('nfile', 'not in file'),
+        ('in', 'in (Any,of,these)'),
+        ('nin', 'not in (None,of,these)'),
+        ('file', 'on page at URL'),
+        ('nfile', 'not on page at URL'),
         )
 
 
@@ -158,6 +159,9 @@ class Rule(OrderedModel):
     ruleset = models.ForeignKey(RuleSet)
     class Meta:
         ordering = ('ruleset', 'order')
+    def __unicode__(self):
+        return ' '.join(self.get_key_display(), self.get_match_type_display(),
+    self.value)
 
     def to_json(self):
         import json
@@ -227,8 +231,7 @@ class Rule(OrderedModel):
         return False
     @staticmethod
     def in_file(url, key):
-        return len(filter(lambda s: s.strip() == key,
-            Rule.cached_file(url).split('\n'))) != 0
+        return key in Rule.cached_file(url)
     @staticmethod
     def cached_file(url):
         import json, hashlib
