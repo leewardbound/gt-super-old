@@ -121,8 +121,8 @@ class RuleSet(user_owned_model):
         else: segment = ''
         if not day:
             day = datetime.date.today()
-        return ('ruleset_clicks_%s_%s%s'%(day,segment,ruleset_id)
-                ).replace('-','_')
+        return ('ruleset_clicks_%s_%s%s'%(day.strftime('%Y_%m_%d')
+          ,segment,ruleset_id)).replace('-','_')
 
     @staticmethod
     def clicks_for(ruleset_id, day=False, segment_id=0):
@@ -146,7 +146,7 @@ class RuleSet(user_owned_model):
         from contrib.date import datetimeIterator
         today = datetime.now()
         week_ago= today - timedelta(days=7)
-        return [(str(d.date()), RuleSet.clicks_for(self.id, d))
+        return [(str(d.date()), RuleSet.clicks_for(self.id, d.date()))
             for d in datetimeIterator(from_date=week_ago, to_date=today)]
     
 class Rule(OrderedModel):
