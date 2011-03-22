@@ -147,8 +147,11 @@ class RuleSet(user_owned_model):
         from contrib.date import datetimeIterator
         today = datetime.now()
         week_ago= today - timedelta(days=7)
-        return [[str(d.date()), RuleSet.clicks_for(self.id, d.date())]
+        return [
+                [[str(d.date()), RuleSet.clicks_for(self.id, d.date(), seg)]
             for d in datetimeIterator(from_date=week_ago, to_date=today)]
+                for seg in [0, ] + [r.id for r in self.rule_set.all()[:10]]
+                ]
     
 class Rule(OrderedModel):
     key = models.CharField(max_length=32, choices=RULE_TYPES)
@@ -160,8 +163,9 @@ class Rule(OrderedModel):
     class Meta:
         ordering = ('ruleset', 'order')
     def __unicode__(self):
-        return ' '.join(self.get_key_display(), self.get_match_type_display(),
-    self.value)
+        return ' '.join([
+            self.get_key_display(), self.get_match_type_display(),
+            self.value])
 
     def to_json(self):
         import json

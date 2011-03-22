@@ -1,16 +1,17 @@
 <div style="width: 100%; height: 100%;" id="{{id}}" class="plot"> </div>
 <script>
   data = {{obj.last_seven_days|safe}}
-  plot = $.jqplot('.plot#{{id}}', [data], {
+  plot = $.jqplot('.plot#{{id}}', data, {
   title:'Clicks over the last 7 days',
+  legend: {show:true},
   axes:{
     xaxis:{renderer:$.jqplot.DateAxisRenderer},
     yaxis:{min: 0, tickInterval: 1},
   },
   series:[
     {label: 'Total'},
-    {% for rule in obj.rule_set.a %}
-      {label: '{{rule.summary}}'},
+    {% for rule in obj.rule_set.all %}
+      {label: '{{rule}}'},
     {% endfor %}
   ]
     });
