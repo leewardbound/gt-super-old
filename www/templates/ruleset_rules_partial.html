@@ -9,7 +9,9 @@
 {% endif %}
 {% for rule in obj.rule_set.all %}
   <div class="rule">
-    <b>If</b> {{rule.key}} {{rule.get_match_type_display}} {{rule.value}}
+    <b>If</b> {{rule.get_key_display}}
+    <b>{{rule.get_match_type_display}}</b>
+    {{rule.value}}
     <br />
     <b>Then redirect to</b> {{rule.redirect_to}}
     {% if rule.and_pass_subids %}
@@ -17,5 +19,6 @@
     <b>And pass subids</b>
     {% endif %}
   </div>
+  <br />
 {% endfor %}
 
