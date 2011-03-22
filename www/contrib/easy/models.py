@@ -1,4 +1,5 @@
 from contrib.random_hashes import *
+from django.core import serializers
 from django.db import models
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
@@ -27,8 +28,14 @@ class easy_shortcuts_mixin:
     def last(self, n=1):
         qs = self.all()
         if not qs.ordered: qs = qs.order_by('id')
-        try: return qs.reverse()[0:n]
+        try: 
+            if n == 1: return qs.reverse()[0]
+            return qs.reverse()[0:n]
         except: return None
+    def to_json(self):
+        json_serializer = serializers.get_serializer("json")()
+        return json_serializer.serialize(self.a(),
+                ensure_ascii=False)
 
 class easy_query_set(QuerySet, easy_shortcuts_mixin):
     pass

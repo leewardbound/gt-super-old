@@ -3,8 +3,8 @@ from django.template.context import RequestContext
 from django.http import HttpResponse
 from contrib.easy.views import *
 from contrib.easy.views.json import *
-from models import RuleSet
-from forms import RuleSetForm
+from models import RuleSet, Rule
+from forms import RuleSetForm, RuleForm
 
 def route(req, id):
     rs = RuleSet.cached_find_ruleset(id)
@@ -18,11 +18,21 @@ def route(req, id):
 def homepage(req):
     return user_object_list(req, RuleSet.a(), template='homepage.html')
 
-def edit_route(req, id=False):
-    return user_form_page(req, RuleSet, RuleSetForm,
-            id=id, redirect_to='/')
+def add_rule(req, id):
+    ruleset = RuleSet.g404(user=req.user, id=id)
+    return form_page(req, Rule, RuleForm, ruleset=ruleset,
+            form_action='/add_rule/%s'%id,
+            redirect_to='/')
 
-def route_form_partial(req, id=False):
+def delete_route(req, id):
+    RuleSet.g404(user=req.user, id=id).delete()
+    return redirect('/')
+
+def edit_route_rules(req, id):
+    return user_object_detail(req, RuleSet.f(id=id),
+        template="ruleset_rules_partial.html")
+
+def edit_route_partial(req, id=False):
     return user_form_page(req, RuleSet, RuleSetForm,
             form_action='/edit_route/{id}',
             id=id, redirect_to='/')

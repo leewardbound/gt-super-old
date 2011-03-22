@@ -13,7 +13,10 @@ PINAX_THEME = "default"
 DEBUG = True
 DEVELOP = False
 SERVE_MEDIA = True
-TEMPLATE_DEBUG = DEBUG
+DEV_MEDIA_URL = '/compiled-media/'
+PRODUCTION_MEDIA_URL = '/compiled-media/'
+
+GLOBAL_MEDIA_DIRS = (os.path.join(os.path.dirname(__file__), 'static'),)
 
 SITE_NAME = 'Globetrotter'
 
@@ -51,10 +54,6 @@ USE_I18N = False
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
 MEDIA_URL = "/media/"
 
-DEV_MEDIA_URL = '/compiled-media/'
-PRODUCTION_MEDIA_URL = '/compiled-media/'
-
-GLOBAL_MEDIA_DIRS = (os.path.join(os.path.dirname(__file__), 'static'),)
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 STATIC_URL = "/static/"
@@ -194,7 +193,6 @@ LOGIN_URL = "/account/login/" # @@@ any way this can be a url name?
 LOGIN_REDIRECT_URLNAME = "home"
 
 EMAIL_CONFIRMATION_DAYS = 2
-EMAIL_DEBUG = DEBUG
 
 AUTHENTICATED_EXEMPT_URLS = [
     r"^/route/",
@@ -217,3 +215,5 @@ except ImportError: pass
 import pygeoip
 GEO_DRIVER = pygeoip.GeoIP(os.path.join(PROJECT_ROOT, 'GeoIP.dat'))
 MEDIA_DEV_MODE = DEVELOP
+TEMPLATE_DEBUG = DEBUG
+EMAIL_DEBUG = DEBUG

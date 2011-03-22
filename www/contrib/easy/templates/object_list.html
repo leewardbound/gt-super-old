@@ -1,0 +1,34 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+{% load uni_form_tags %}
+
+{% block body_class %}object_list{% endblock %}
+
+{% block extra_head %}
+<script>
+  var object_type = '{{type|lower}}';
+  var {{type|lower}}_object_list = l_o_l = [ {% for r in objects.object_list.reverse %}
+{{r.to_json|safe}}, {% endfor %} ]
+  object_list = {}
+  object_list.{{type|lower}} = l_o_l;
+  console.debug(object_list)
+</script>
+{% endblock %}
+
+{% block body %}
+{% if edit_link %}
+  <div class="new_{{type}}">
+    <a class="ajax modal" id="new_{{type}}" href="{{edit_link}}">
+      {% if not edit_link_text %}
+        Create new {{type|lower}}
+      {% else %}
+        {{edit_link_text}}
+      {% endif %}
+    </a>
+  </div>
+{% endif %}
+<div class="{{type|lower}} object_list">
+</div>
+{% endblock %}

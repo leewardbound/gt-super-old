@@ -45,6 +45,8 @@ class RuleSet(user_owned_model):
         'id': self.id,
         'user_id': self.user.id,
         'nickname': self.nickname,
+        'clicks_today': self.clicks_today(),
+        'link': self.url(),
         'short_url_stub': self.short_url_stub,
         'if_all_rules_fail_redirect_to': self.if_all_rules_fail_redirect_to, 
         'and_pass_subids': self.and_pass_subids,
@@ -113,34 +115,6 @@ class RuleSet(user_owned_model):
     def pass_subids(url, visitor):
         return url
     
-    @staticmethod
-    def form_for(req, id=False, *args, **kwargs):
-        from forms import RuleSetForm
-        from uni_form.helpers import FormHelper, Submit, Reset
-        from uni_form.helpers import Layout, Fieldset, Row, HTML
-        from uni_form.templatetags.uni_form_tags import do_uni_form
-        if not req.method == 'POST': data = None
-        else: data = req.POST
-        extra = 1
-        if 'instance' in kwargs:
-            extra = 0
-        form = RuleSetForm(extra, req.user, data=data, *args, **kwargs) 
-        form.helper = FormHelper()
-        if 'instance' in kwargs:
-            form.helper.form_action = '/edit_route/%s'%kwargs['instance'].id
-        else: form.helper.form_action = '/create_route'
-        form.helper.form_method = 'POST'
-        form.helper.add_layout(Layout(
-            Fieldset('Setup Route',
-                Row('nickname', 'short_url_stub'),
-            ),
-            Fieldset('Default URL',
-                Row('if_all_rules_fail_redirect_to', 'and_pass_subids')
-            )))
-        form.helper.add_input(Submit('save', "Save this route"))
-        return form
-
-
     @staticmethod
     def clicks_key(ruleset_id, day=False, segment_id=0):
         if segment_id > 0: segment = '_%s'%segment_id

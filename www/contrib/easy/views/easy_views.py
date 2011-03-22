@@ -3,15 +3,27 @@ from django.http import Http404
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
 
-def form_view_data(req, model_class, form_class, user=None, 
+def form_page(req, model_class, form_class, 
+        redirect_to=False, id=None, instance=None, template=None, **kwargs):
+    data = form_view_data(req,model_class,form_class, 
+            id=id, instance=instance, **kwargs)
+    template = template or 'form_partial.html'
+    if data['saved'] and redirect_to:
+        return redirect(redirect_to.format(id=data['id']))
+    return render_to_response(template, data,
+            context_instance=RequestContext(req))
+
+def user_form_page(req, model_class, form_class, *args, **kwargs):
+    if not 'user' in kwargs: kwargs['user'] = req.user
+    return form_page(req, model_class, form_class, *args, **kwargs)
+
+def form_view_data(req, model_class, form_class,
         id=None, instance=None, **kwargs):
     data = req.POST if req.POST else None
-    user = user if user else req.user
-    kwargs['user'] = user
     new = True
     if id or instance:
         new = False
-        if not instance: instance = model_class.g404(user=user, pk=id)
+        if not instance: instance = model_class.g404(pk=id)
         else: instance = instance
     form = form_class(data, instance=instance, **kwargs)
     saved = False
@@ -29,19 +41,6 @@ def form_view_data(req, model_class, form_class, user=None,
             'errors': errors}
     return out
 
-def form_page(req, model_class, form_class, 
-        redirect_to=False, id=None, instance=None, template=None, **kwargs):
-    data = form_view_data(req,model_class,form_class, 
-            id=id, instance=instance, **kwargs)
-    template = template or 'form_partial.html'
-    if data['saved'] and redirect_to:
-        return redirect(redirect_to.format(id=data['id']))
-    return render_to_response(template, data,
-            context_instance=RequestContext(req))
-
-def user_form_page(req, model_class, form_class, *args, **kwargs):
-    if not 'user' in kwargs: kwargs['user'] = req.user
-    return form_page(req, model_class, form_class, *args, **kwargs)
 
 def user_object_detail(req, qs, template='object_detail.html',
         relation='user', extra_context=None):
@@ -67,7 +66,8 @@ def user_object_list(req, queryset, per_page=25, template='object_list.html',
     try: objects = paginator.page(page)
     except (EmptyPage, InvalidPage): objects = paginator.page(1)
 
-    data = {"objects": objects}
+    data = {"objects": objects, 'type': queryset.model.class_name(),
+            }
     if extra_context: data = dict(data, **extra_context)
 
     objects.modelname = ''

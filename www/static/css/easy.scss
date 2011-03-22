@@ -1,15 +1,13 @@
 // COMMON STUFF //
+@import "base";
 .hidden, .unhidable { display: none }
 
 // OBJECT STUFF //
 .object_row {
   border: 3px solid #aaa;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  background: #ddd;
+  @include border-radius;
   padding: 4px;
   margin-top: 8px;
-
   span.name { 
     width: 150px;
     padding: 10px;
@@ -17,13 +15,12 @@
     font-weight: bold;
     text-shadow: 1px 1px solid #000;
   }
-
-  a.delete { 
+}
+  .ui-widget-header a.delete{ 
     float: right;
-    color: lighten(red, 15%);
+    color: lighten(red, 10%);
   }
   a.delete:hover { color: black }
-}
 
 // FORM STUFF //
 .ctrlHolder { padding: 8px; }
@@ -31,7 +28,7 @@
 .formRow .ctrlHolder { 
   display: inline-block;
   input { width: 90% }
-  }
+}
 
 .uniForm fieldset {
   border: thin dashed gray;
