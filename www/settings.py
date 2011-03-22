@@ -138,6 +138,7 @@ INSTALLED_APPS = [
     "staticfiles",
     "debug_toolbar",
     "uni_form",
+    "django_openid",
     "ajax_validation",
     "timezones",
     "announcements",
