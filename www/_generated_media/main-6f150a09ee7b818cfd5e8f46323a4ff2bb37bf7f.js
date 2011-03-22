@@ -1885,7 +1885,7 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 	$m['row_type_map'].__bind_type__ = 0;
 	$m['row_type_map'].__args__ = [null,null,['klass']];
 	$m['loaded'] = function(event) {
-		var $iter5_nextval,$add2,$iter5_idx,$iter5_iter,div,$iter4_nextval,obj,$iter4_idx,$attr20,objects,$attr19,klass,$iter4_type,$iter5_array,$iter4_array,$iter5_type,klass_row_type,$add1,$iter4_iter,row;
+		var $iter5_nextval,$attr20,$iter5_idx,$iter5_iter,div,$iter4_nextval,obj,$iter4_idx,objects,$attr19,klass,$iter4_type,$iter5_array,$iter4_array,$iter5_type,klass_row_type,$iter4_iter,row;
 		$iter4_iter = $p['dict'](object_list)['items']();
 		$iter4_nextval=$p['__iter_prepare']($iter4_iter,true);
 		while (typeof($p['__wrapped_next']($iter4_nextval).$nextval) != 'undefined') {
@@ -1894,7 +1894,6 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			klass_row_type = $m['row_type_map'](klass);
 			div = $m['j']($p['sprintf']('div.%s.object_list', klass));
 			div['html']('');
-			console['debug']($p['__op_add']($add1='Loading object list for ',$add2=klass));
 			$iter5_iter = $p['list'](objects);
 			$iter5_nextval=$p['__iter_prepare']($iter5_iter,false);
 			while (typeof($p['__wrapped_next']($iter5_nextval).$nextval) != 'undefined') {
@@ -12649,7 +12648,7 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 	$m['row_type_map'].__bind_type__ = 0;
 	$m['row_type_map'].__args__ = [null,null,['klass']];
 	$m['loaded'] = function(event) {
-		var $iter5_nextval,$add2,$iter5_idx,$iter5_iter,div,$iter4_nextval,obj,$iter4_idx,$attr20,objects,$attr19,klass,$iter4_type,$iter5_array,$iter4_array,$iter5_type,klass_row_type,$add1,$iter4_iter,row;
+		var $iter5_nextval,$attr20,$iter5_idx,$iter5_iter,div,$iter4_nextval,obj,$iter4_idx,objects,$attr19,klass,$iter4_type,$iter5_array,$iter4_array,$iter5_type,klass_row_type,$iter4_iter,row;
 		$iter4_iter = $p['dict'](object_list)['items']();
 		$iter4_nextval=$p['__iter_prepare']($iter4_iter,true);
 		while (typeof($p['__wrapped_next']($iter4_nextval).$nextval) != 'undefined') {
@@ -12658,7 +12657,6 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			klass_row_type = $m['row_type_map'](klass);
 			div = $m['j']($p['sprintf']('div.%s.object_list', klass));
 			div['html']('');
-			console['debug']($p['__op_add']($add1='Loading object list for ',$add2=klass));
 			$iter5_iter = $p['list'](objects);
 			$iter5_nextval=$p['__iter_prepare']($iter5_iter,false);
 			while (typeof($p['__wrapped_next']($iter5_nextval).$nextval) != 'undefined') {
