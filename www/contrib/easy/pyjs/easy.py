@@ -91,7 +91,6 @@ def loaded(event):
         klass_row_type = row_type_map(klass)
         div = j('div.%s.object_list'%klass)
         div.html('')
-        console.debug('Loading object list for ' + klass)
         for obj in list(objects):
             row = klass_row_type(obj)
             row.render()
