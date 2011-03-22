@@ -22,6 +22,8 @@ MATCH_TYPES = (
         ('lt', '< (LESS THAN)'),
         ('in', 'in (Any,of,comma,seperated)'),
         ('nin', 'not in (Any,of,comma,seperated)'),
+        ('file', 'in file (Updated hourly, newline seperated)'),
+        ('nfile', 'not in file'),
         )
 
 
@@ -220,4 +222,22 @@ class Rule(OrderedModel):
             except: return False
         if o == 'in': return n in map(lambda s:s.strip(), h.split(','))
         if o == 'nin': return not n in map(lambda s:s.strip(), h.split(','))
+        if o == 'file': return Rule.in_file(h.strip(), n)
+        if o == 'nfile': return not Rule.in_file(h.strip(), n)
         return False
+    @staticmethod
+    def in_file(url, key):
+        return len(filter(lambda s: s.strip() == key,
+            Rule.cached_file(url).split('\n'))) != 0
+    @staticmethod
+    def cached_file(url):
+        import json, hashlib
+        from django.core.cache import cache
+        m = hashlib.md5(url).hexdigest()
+        key_name = 'remote_file_%s'%m
+        old_cached_value = cache.get(key_name)
+        if not old_cached_value:
+            import urllib2
+            downloaded = urllib2.urlopen(url).read()
+            cache.set(key_name, downloaded, 3600)
+        return (old_cached_value or downloaded)
