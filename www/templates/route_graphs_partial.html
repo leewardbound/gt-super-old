@@ -5,9 +5,12 @@
   title:'Clicks over the last 7 days',
   legend: {show:true},
   axes:{
-    xaxis:{renderer:$.jqplot.DateAxisRenderer},
-    yaxis:{min: 0, tickInterval: 1},
+    xaxis:{renderer:$.jqplot.DateAxisRenderer,
+      tickOptions:{formatString:'%b %#d'}},
+    yaxis:{min: 0, tickInterval: 1, tickOptions:{formatString:'%d'}},
   },
+  highlighter: {sizeAdjust: 7.5},
+  cursor: {show: false},
   series:[
     {label: 'Total'},
     {% for rule in obj.rule_set.all %}
