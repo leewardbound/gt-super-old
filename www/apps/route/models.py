@@ -100,7 +100,7 @@ class RuleSet(user_owned_model):
         default = ruleset.get('if_all_rules_fail_redirect_to', 'about:blank')
         RuleSet.increment_clicks(ruleset['id'])
         if not rule:
-            RuleSet.increment_clicks(ruleset['id'], False, -1)
+            RuleSet.increment_clicks(ruleset['id'], False, 0)
             if ruleset['and_pass_subids']: 
                 return RuleSet.pass_subids(default, visitor)
             else: return default
