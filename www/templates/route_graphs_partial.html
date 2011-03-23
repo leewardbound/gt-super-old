@@ -3,7 +3,7 @@
   data = {{obj.last_seven_days|safe}}
   plot = $.jqplot('.plot#{{id}}', data, {
   title:'Clicks over the last 7 days',
-  legend: {show:true},
+  legend: {show:true, location: 'nw'},
   stackSeries: true,
   axes:{
     xaxis:{renderer:$.jqplot.DateAxisRenderer,
