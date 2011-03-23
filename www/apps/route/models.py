@@ -100,6 +100,7 @@ class RuleSet(user_owned_model):
         default = ruleset.get('if_all_rules_fail_redirect_to', 'about:blank')
         RuleSet.increment_clicks(ruleset['id'])
         if not rule:
+            RuleSet.increment_clicks(ruleset['id'], False, -1)
             if ruleset['and_pass_subids']: 
                 return RuleSet.pass_subids(default, visitor)
             else: return default
@@ -117,22 +118,22 @@ class RuleSet(user_owned_model):
         return url
     
     @staticmethod
-    def clicks_key(ruleset_id, day=False, segment_id=0):
-        if segment_id > 0: segment = '_%s'%segment_id
-        else: segment = ''
+    def clicks_key(ruleset_id, day=False, segment_id=False):
+        if segment_id is False: segment = ''
+        else: segment = 'seg_%s_'%segment_id
         if not day:
             day = datetime.date.today()
         return ('ruleset_clicks_%s_%s%s'%(day.strftime('%Y_%m_%d')
           ,segment,ruleset_id)).replace('-','_')
 
     @staticmethod
-    def clicks_for(ruleset_id, day=False, segment_id=0):
+    def clicks_for(ruleset_id, day=False, segment_id=False):
         from django.core.cache import cache
         key = RuleSet.clicks_key(ruleset_id, day, segment_id)
         return int(cache.get(key, 0))
 
     @staticmethod
-    def increment_clicks(ruleset_id, day=False, segment_id=0):
+    def increment_clicks(ruleset_id, day=False, segment_id=False):
         from django.core.cache import cache
         key = RuleSet.clicks_key(ruleset_id, day, segment_id)
         if not cache.get(key): cache.set(key, 0)
@@ -150,7 +151,7 @@ class RuleSet(user_owned_model):
         return [
                 [[str(d.date()), RuleSet.clicks_for(self.id, d.date(), seg)]
             for d in datetimeIterator(from_date=week_ago, to_date=today)]
-                for seg in [0, ] + [r.id for r in self.rule_set.all()[:10]]
+                for seg in [r.id for r in self.rule_set.all()[:10]]+[0,]
                 ]
     
 class Rule(OrderedModel):
