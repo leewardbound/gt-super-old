@@ -1768,11 +1768,11 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $and6,$and5,opts;
+			var $or5,$or6,opts;
 			opts = $p['dict']([['display_name', 'Edit']]);
 			opts.__setitem__('href', self['get_template']('edit_form_url'));
 			opts.__setitem__('contents', self['get_template']('edit_form_contents'));
-			if ($p['bool'](($p['bool']($and5=!$p['bool'](opts.__contains__('href')))?!$p['bool'](opts.__contains__('contents')):$and5))) {
+			if ($p['bool'](!$p['bool'](($p['bool']($or5=$p['hasattr'](self, 'edit_form_url'))?$or5:$p['hasattr'](self, 'edit_form_contents'))))) {
 				return null;
 			}
 			return $pyjs_kwargs_call(self, 'UITab', null, opts, [{}, 'edit']);
@@ -1785,11 +1785,11 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $and8,opts,$and7;
+			var $or7,opts,$or8;
 			opts = $p['dict']([['display_name', 'Graphs']]);
 			opts.__setitem__('href', self['get_template']('graphs_url'));
 			opts.__setitem__('contents', self['get_template']('graphs_data'));
-			if ($p['bool'](($p['bool']($and7=!$p['bool'](opts.__contains__('href')))?!$p['bool'](opts.__contains__('contents')):$and7))) {
+			if ($p['bool'](!$p['bool'](($p['bool']($or7=$p['hasattr'](self, 'graphs_url'))?$or7:$p['hasattr'](self, 'graphs_data'))))) {
 				return null;
 			}
 			return $pyjs_kwargs_call(self, 'UITab', null, opts, [{}, 'graphs']);
@@ -1802,12 +1802,12 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $or5,$or6,$attr18,$attr15,$attr17,$attr16;
+			var $or9,$or10,$attr15,$attr17,$attr16,$attr18;
 			if ($p['bool'](!$p['bool']($p['hasattr'](self, 'delete_url')))) {
 				return null;
 			}
 			self.__is_instance__ && typeof self.__setattr__ == 'function' ? self.__setattr__('delete_button', $m['j']('\x3Ca\x3E')['html']('Delete')) : $p['setattr'](self, 'delete_button', $m['j']('\x3Ca\x3E')['html']('Delete'));
-			self['delete_button']['attr']('href', ($p['bool']($or5=self['get_template']('delete_url'))?$or5:'#'));
+			self['delete_button']['attr']('href', ($p['bool']($or9=self['get_template']('delete_url'))?$or9:'#'));
 			self['delete_button']['bind']('click', (($attr15=($attr16=self)['confirm_delete']) == null || (($attr16.__is_instance__) && typeof $attr15 == 'function') || (typeof $attr15['__get__'] == 'function')?
 						$p['getattr']($attr16, 'confirm_delete'):
 						self['confirm_delete']));
@@ -1923,14 +1923,14 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 
 	$m['popup'].__bind_type__ = 0;
 	$m['popup'].__args__ = [null,null,['data']];
-	$m['handlers'] = function(event) {
+	$m['construct'] = function(event) {
 		var ajax_modal;
 		ajax_modal = function(event) {
 			var $attr21,$attr22,href,ajax_complete;
 			event['preventDefault']();
-			href = $m['j']((($attr21=($attr22=event)['target']) == null || (($attr22.__is_instance__) && typeof $attr21 == 'function') || (typeof $attr21['__get__'] == 'function')?
-						$p['getattr']($attr22, 'target'):
-						event['target']))['attr']('href');
+			href = $m['j']((($attr21=($attr22=event)['currentTarget']) == null || (($attr22.__is_instance__) && typeof $attr21 == 'function') || (typeof $attr21['__get__'] == 'function')?
+						$p['getattr']($attr22, 'currentTarget'):
+						event['currentTarget']))['attr']('href');
 			ajax_complete = function(data, status, xhr) {
 
 				$m['popup'](data);
@@ -1947,15 +1947,16 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 
 		ajax_modal.__bind_type__ = 0;
 		ajax_modal.__args__ = [null,null,['event']];
-		$m['j']('a.ajax')['die']('click');
-		$m['j']('a.ajax')['live']('click', ajax_modal);
+		$m['j']('.ajax')['die']('click');
+		$m['j']('.ajax')['live']('click', ajax_modal);
+		$m['j']('div.button')['button']();
 		return null;
 	};
-	$m['handlers'].__name__ = 'handlers';
+	$m['construct'].__name__ = 'construct';
 
-	$m['handlers'].__bind_type__ = 0;
-	$m['handlers'].__args__ = [null,null,['event']];
-	$m['j']($m['handlers']);
+	$m['construct'].__bind_type__ = 0;
+	$m['construct'].__args__ = [null,null,['event']];
+	$m['j']($m['construct']);
 	return this;
 }; /* end easy */
 
@@ -12531,11 +12532,11 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $and6,$and5,opts;
+			var $or5,$or6,opts;
 			opts = $p['dict']([['display_name', 'Edit']]);
 			opts.__setitem__('href', self['get_template']('edit_form_url'));
 			opts.__setitem__('contents', self['get_template']('edit_form_contents'));
-			if ($p['bool'](($p['bool']($and5=!$p['bool'](opts.__contains__('href')))?!$p['bool'](opts.__contains__('contents')):$and5))) {
+			if ($p['bool'](!$p['bool'](($p['bool']($or5=$p['hasattr'](self, 'edit_form_url'))?$or5:$p['hasattr'](self, 'edit_form_contents'))))) {
 				return null;
 			}
 			return $pyjs_kwargs_call(self, 'UITab', null, opts, [{}, 'edit']);
@@ -12548,11 +12549,11 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $and8,opts,$and7;
+			var $or7,opts,$or8;
 			opts = $p['dict']([['display_name', 'Graphs']]);
 			opts.__setitem__('href', self['get_template']('graphs_url'));
 			opts.__setitem__('contents', self['get_template']('graphs_data'));
-			if ($p['bool'](($p['bool']($and7=!$p['bool'](opts.__contains__('href')))?!$p['bool'](opts.__contains__('contents')):$and7))) {
+			if ($p['bool'](!$p['bool'](($p['bool']($or7=$p['hasattr'](self, 'graphs_url'))?$or7:$p['hasattr'](self, 'graphs_data'))))) {
 				return null;
 			}
 			return $pyjs_kwargs_call(self, 'UITab', null, opts, [{}, 'graphs']);
@@ -12565,12 +12566,12 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 			} else {
 				var self = arguments[0];
 			}
-			var $or5,$or6,$attr18,$attr15,$attr17,$attr16;
+			var $or9,$or10,$attr15,$attr17,$attr16,$attr18;
 			if ($p['bool'](!$p['bool']($p['hasattr'](self, 'delete_url')))) {
 				return null;
 			}
 			self.__is_instance__ && typeof self.__setattr__ == 'function' ? self.__setattr__('delete_button', $m['j']('\x3Ca\x3E')['html']('Delete')) : $p['setattr'](self, 'delete_button', $m['j']('\x3Ca\x3E')['html']('Delete'));
-			self['delete_button']['attr']('href', ($p['bool']($or5=self['get_template']('delete_url'))?$or5:'#'));
+			self['delete_button']['attr']('href', ($p['bool']($or9=self['get_template']('delete_url'))?$or9:'#'));
 			self['delete_button']['bind']('click', (($attr15=($attr16=self)['confirm_delete']) == null || (($attr16.__is_instance__) && typeof $attr15 == 'function') || (typeof $attr15['__get__'] == 'function')?
 						$p['getattr']($attr16, 'confirm_delete'):
 						self['confirm_delete']));
@@ -12686,14 +12687,14 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 
 	$m['popup'].__bind_type__ = 0;
 	$m['popup'].__args__ = [null,null,['data']];
-	$m['handlers'] = function(event) {
+	$m['construct'] = function(event) {
 		var ajax_modal;
 		ajax_modal = function(event) {
 			var $attr21,$attr22,href,ajax_complete;
 			event['preventDefault']();
-			href = $m['j']((($attr21=($attr22=event)['target']) == null || (($attr22.__is_instance__) && typeof $attr21 == 'function') || (typeof $attr21['__get__'] == 'function')?
-						$p['getattr']($attr22, 'target'):
-						event['target']))['attr']('href');
+			href = $m['j']((($attr21=($attr22=event)['currentTarget']) == null || (($attr22.__is_instance__) && typeof $attr21 == 'function') || (typeof $attr21['__get__'] == 'function')?
+						$p['getattr']($attr22, 'currentTarget'):
+						event['currentTarget']))['attr']('href');
 			ajax_complete = function(data, status, xhr) {
 
 				$m['popup'](data);
@@ -12710,15 +12711,16 @@ $pyjs.loaded_modules['easy'] = function (__mod_name__) {
 
 		ajax_modal.__bind_type__ = 0;
 		ajax_modal.__args__ = [null,null,['event']];
-		$m['j']('a.ajax')['die']('click');
-		$m['j']('a.ajax')['live']('click', ajax_modal);
+		$m['j']('.ajax')['die']('click');
+		$m['j']('.ajax')['live']('click', ajax_modal);
+		$m['j']('div.button')['button']();
 		return null;
 	};
-	$m['handlers'].__name__ = 'handlers';
+	$m['construct'].__name__ = 'construct';
 
-	$m['handlers'].__bind_type__ = 0;
-	$m['handlers'].__args__ = [null,null,['event']];
-	$m['j']($m['handlers']);
+	$m['construct'].__bind_type__ = 0;
+	$m['construct'].__args__ = [null,null,['event']];
+	$m['j']($m['construct']);
 	return this;
 }; /* end easy */
 

@@ -4,7 +4,6 @@
   plot = $.jqplot('.plot#{{id}}', data, {
   title:'Clicks over the last 7 days',
   legend: {show:true, location: 'nw'},
-  stackSeries: true,
   axes:{
     xaxis:{renderer:$.jqplot.DateAxisRenderer,
       tickOptions:{formatString:'%b %#d'}},
@@ -12,7 +11,7 @@
   },
   highlighter: {sizeAdjust: 7.5},
   cursor: {show: false},
-  seriesDefaults: {fill: true},
+  seriesDefaults: {showMarker: false, },
   series:[
     {% for rule in obj.rule_set.all %}
     {label: '{{rule}}'},
