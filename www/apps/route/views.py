@@ -18,7 +18,7 @@ def route(req, id):
 def homepage(req):
     return user_object_list(req, RuleSet.a(),
             extra_context={
-                'add_link':'/route_form_partial/',
+                'add_link':'/edit_route/',
                 'add_link_text':'Add a route',
                 'header': 'My Routes',
                 'subheader': 'Just get started',
