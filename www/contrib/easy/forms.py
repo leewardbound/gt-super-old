@@ -16,8 +16,8 @@ class EasyForm(forms.ModelForm):
             if id: form_action = form_action.replace('{id}', str(id))
             else: form_action = form_action.replace('{id}', '')
             self.helper.form_action = form_action
+        submit = Submit('save', 'Create' if not instance else 'Edit')
         super(EasyForm, self).__init__(data, instance=instance, *args, **kwargs)
-        submit = Submit('save', 'Create' if not self.instance else 'Edit')
         self.helper.add_input(submit)
 
     def save(self, *args, **kwargs):

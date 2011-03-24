@@ -12,11 +12,17 @@ def route(req, id):
             'referer': req.META.get('HTTP_REFERER', ''),
             'params': req.META.get('QUERY_STRING', ''),
             }
-    if not rs: return HttpResponse('Ruleset Not Found')
+    if not rs: return HttpResponse('Route Not Found')
     return redirect(RuleSet.evaluate_visitor(rs, visitor))
 
 def homepage(req):
-    return user_object_list(req, RuleSet.a(), template='homepage.html')
+    return user_object_list(req, RuleSet.a(),
+            extra_context={
+                'add_link':'/route_form_partial/',
+                'add_link_text':'Add a route',
+                'header': 'My Routes',
+                'subheader': 'Just get started',
+                })
 
 def add_rule(req, id):
     ruleset = RuleSet.g404(user=req.user, id=id)

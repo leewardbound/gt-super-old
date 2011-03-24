@@ -1,8 +1,7 @@
 from __javascript__ import jQuery
 from __javascript__ import  object_list, console, confirm
 from __pyjamas__ import toJSObjects
-j = jQuery
-# Create a simple widget class
+j = jQuery # Create a simple widget class
 class ObjectRowWidget(object):
     def __init__(self, as_json):
         # Add some initial HTML code
@@ -50,13 +49,16 @@ class ObjectRowWidget(object):
         opts = { 'display_name': 'Edit' }
         opts['href'] = self.get_template('edit_form_url')
         opts['contents'] = self.get_template('edit_form_contents')
-        if not 'href' in opts and not 'contents' in opts: return None
+        if not (hasattr(self, 'edit_form_url') or 
+                hasattr(self, 'edit_form_contents')):
+            return None
         return self.UITab('edit', **opts)
     def graphs_button(self):
         opts = { 'display_name': 'Graphs' }
         opts['href'] = self.get_template('graphs_url')
         opts['contents'] = self.get_template('graphs_data')
-        if not 'href' in opts and not 'contents' in opts: return None
+        if not (hasattr(self, 'graphs_url') or hasattr(self, 'graphs_data')):
+            return None
         return self.UITab('graphs', **opts)
     def delete_button(self):
         if not hasattr(self, 'delete_url'): return None
@@ -104,14 +106,16 @@ def popup(data):
     popup_obj.dialog(toJSObjects({ 'width': 500 }));
 
 # Event handlers
-def handlers(event):
+def construct(event):
     def ajax_modal(event):
         event.preventDefault()
-        href = j(event.target).attr('href')
+        href = j(event.currentTarget).attr('href')
         def ajax_complete(data, status, xhr):
             popup(data)
         j.get(href, '', ajax_complete)
-    j('a.ajax').die('click')
-    j('a.ajax').live('click', ajax_modal)
+    j('.ajax').die('click')
+    j('.ajax').live('click', ajax_modal)
+    j('div.button').button()
 
-j(handlers)
+j(construct)
+

@@ -50,11 +50,13 @@ def user_object_detail(req, qs, template='object_detail.html',
     return render_to_response(template, data,
             context_instance=RequestContext(req))
 
-def user_object_list(req, queryset, per_page=25, template='object_list.html',
-        allow_empty=True, allow_override_per_page=True, relation='user',
-        extra_context=None):
+def user_object_list(req, queryset, relation='user', *args, **kwargs):
     user_qs = queryset.f(**{relation: req.user})
-    if not allow_empty and user_qs.count() == 0:
+    return object_list(req, user_qs, *args, **kwargs)
+
+def object_list(req, queryset, per_page=25, template='object_list.html',
+        allow_empty=True, allow_override_per_page=True, extra_context=None):
+    if not allow_empty and queryset.count() == 0:
         raise Http404
     try: page = int(req.GET.get('page', '1'))
     except ValueError: page = 1
@@ -62,11 +64,12 @@ def user_object_list(req, queryset, per_page=25, template='object_list.html',
         if allow_override_per_page: per_page = int(req.GET['per_page'])
     except: pass
 
-    paginator = Paginator(user_qs, per_page) 
+    paginator = Paginator(queryset, per_page) 
     try: objects = paginator.page(page)
     except (EmptyPage, InvalidPage): objects = paginator.page(1)
 
     data = {"objects": objects, 'type': queryset.model.class_name(),
+            "object_list": objects.object_list
             }
     if extra_context: data = dict(data, **extra_context)
 

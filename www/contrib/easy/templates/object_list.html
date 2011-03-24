@@ -18,15 +18,26 @@
 {% endblock %}
 
 {% block body %}
-{% if edit_link %}
-  <div class="new_{{type}}">
-    <a class="ajax modal" id="new_{{type}}" href="{{edit_link}}">
-      {% if not edit_link_text %}
-        Create new {{type|lower}}
-      {% else %}
-        {{edit_link_text}}
-      {% endif %}
-    </a>
+
+<h2>
+{% if not header %}
+{{type}}
+{% else %}
+{{ header }}
+{% endif %}
+</h2>
+
+{% if subheader %}
+<small>{{subheader}}</small>
+{% endif %}
+
+{% if add_link %}
+<div class="ajax new_{{type}} button" href="{{add_link}}">
+    {% if not add_link_text %}
+      Create new {{type|lower}}
+    {% else %}
+      {{add_link_text}}
+    {% endif %}
   </div>
 {% endif %}
 <div class="{{type|lower}} object_list">
