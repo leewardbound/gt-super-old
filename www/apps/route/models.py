@@ -115,7 +115,7 @@ class RuleSet(user_owned_model):
                         
     @staticmethod
     def pass_subids(url, visitor):
-        return url
+        return '%s?&%s'%(url, visitor['params']) if visitor['params'] else url
     
     @staticmethod
     def clicks_key(ruleset_id, day=False, segment_id=False):

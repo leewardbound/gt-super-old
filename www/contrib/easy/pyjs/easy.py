@@ -115,7 +115,7 @@ def construct(event):
         j.get(href, '', ajax_complete)
     j('.ajax').die('click')
     j('.ajax').live('click', ajax_modal)
-    j('div.button').button()
+    j('.button').button()
 
 j(construct)
 
