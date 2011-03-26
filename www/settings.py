@@ -42,7 +42,7 @@ DATABASES = {
     }
 }
 
-TIME_ZONE = "US/Eastern"
+TIME_ZONE = "US/Pacific"
 
 LANGUAGE_CODE = "en-us"
 
