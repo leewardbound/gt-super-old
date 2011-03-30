@@ -11,5 +11,5 @@ pip_cmd += ["--requirement",req_file]
 print ' '.join(pip_cmd)
 subprocess.call(pip_cmd)
   
-#subprocess.call(["easy_install"] +
-        #open('requirements/easy_install.txt').readlines())
+subprocess.call(["easy_install"] +
+        open('requirements/easy_install.txt').readlines())
