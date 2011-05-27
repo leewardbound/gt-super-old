@@ -9,3 +9,5 @@ apps/styles/.sass-cache/
 env
 .venv
 GeoIP.dat
+
+/www/_generated_media
